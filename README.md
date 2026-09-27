@@ -10,7 +10,15 @@ npm run dev      # http://localhost:3000
 npm run build    # production build
 ```
 
-Deploy on Vercel (import the repo, no settings needed). Then set the real domain in `data/site.ts` → `url`.
+## Deploying
+
+**GitHub Pages (set up already).** Every push to `main` builds the site and publishes it to
+`https://savvycross.github.io/cross-portfolio/` via `.github/workflows/deploy.yml`. It also rebuilds daily to keep Vimeo thumbnails fresh.
+Pages must be turned on once: repo **Settings → Pages → Source: GitHub Actions**. On a free GitHub plan the repo must be public for Pages to work.
+
+**Vercel (alternative).** Import the repo on vercel.com; no settings needed. Set `NEXT_PUBLIC_SITE_URL` to your domain.
+
+**Your own domain.** Set `NEXT_PUBLIC_SITE_URL` (e.g. `https://crossmakele.com`) so share previews and the sitemap use it.
 
 ## Updating content
 

@@ -1,5 +1,7 @@
 // All site-wide content lives here. Edit this file to update copy, links and videos.
 
+import portrait from "@/public/images/cross-makele.jpg";
+
 export type SocialLink = { label: string; href: string };
 
 export const site = {
@@ -8,7 +10,8 @@ export const site = {
   title: "Motion designer helping brands explain what they are building to their audience.",
   positioning:
     "I create motion design and product-focused visual content for startups and technology brands — especially AI, fintech, SaaS, Web3 and digital products.",
-  url: "https://crossmakele.com", // TODO: replace with the real domain once it's live
+  // Live address. Set NEXT_PUBLIC_SITE_URL when you move to your own domain.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://savvycross.github.io/cross-portfolio",
   email: "crossanimations1@gmail.com",
   location: "Nigeria",
   availability: "Available for freelance projects and remote opportunities.",
@@ -30,7 +33,7 @@ export const site = {
   ] as SocialLink[],
 
   portrait: {
-    src: "/images/cross-makele.jpg",
+    src: portrait,
     alt: "Portrait of Cross Makele in a green suit and gold tie against a warm orange backdrop",
   },
 

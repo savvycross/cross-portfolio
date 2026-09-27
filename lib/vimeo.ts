@@ -54,7 +54,10 @@ export async function getVimeoMeta(url: string): Promise<VimeoMeta> {
       `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(clean)}&width=1920`,
       { next: { revalidate: 86400 }, signal: AbortSignal.timeout(5000) },
     );
-    if (!res.ok) return fallback;
+    if (!res.ok) {
+      console.warn(`[vimeo] oEmbed ${res.status} for ${clean} — using fallback poster`);
+      return fallback;
+    }
     const data = (await res.json()) as {
       thumbnail_url?: string;
       width?: number;
@@ -67,7 +70,8 @@ export async function getVimeoMeta(url: string): Promise<VimeoMeta> {
       aspect: data.width && data.height ? data.width / data.height : 16 / 9,
       duration: data.duration ?? null,
     };
-  } catch {
+  } catch (err) {
+    console.warn(`[vimeo] oEmbed failed for ${url}: ${(err as Error).message}`);
     return fallback;
   }
 }
