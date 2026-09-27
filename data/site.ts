@@ -11,7 +11,7 @@ export const site = {
   positioning:
     "I create motion design and product-focused visual content for startups and technology brands — especially AI, fintech, SaaS, Web3 and digital products.",
   // Live address. Set NEXT_PUBLIC_SITE_URL when you move to your own domain.
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://savvycross.github.io/cross-portfolio",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://cross-portfolio-gamma.vercel.app",
   email: "crossanimations1@gmail.com",
   location: "Nigeria",
   availability: "Available for freelance projects and remote opportunities.",
