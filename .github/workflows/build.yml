@@ -1,0 +1,26 @@
+name: Build
+
+# Vercel deploys the site on every push to main. This workflow is a safety
+# check: it makes sure the site still builds (e.g. after editing data/*.ts).
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx next build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
