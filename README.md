@@ -45,6 +45,17 @@ Everything editable lives in two files. You never need to touch the components.
 
 Leave any optional field out and its section doesn't render.
 
+### Contact form
+
+The "Start a project" form (Contact section) opens the visitor's email app with their brief written out.
+To have it deliver straight to your inbox instead:
+
+1. Get a free access key at web3forms.com (enter `crossanimations1@gmail.com`).
+2. In Vercel → Project → Settings → Environment Variables, add `NEXT_PUBLIC_WEB3FORMS_KEY` = your key.
+3. Redeploy.
+
+Form options (project types, budgets, timelines) live in `data/site.ts` → `form`.
+
 ### Vimeo settings
 
 - Hover previews and the hero loop use Vimeo's chromeless background player. This needs a Vimeo **Starter plan or higher**. On a free plan, the poster stays visible and nothing breaks.

@@ -13,13 +13,14 @@ export const site = {
   // Live address. Set NEXT_PUBLIC_SITE_URL when you move to your own domain.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://cross-portfolio-gamma.vercel.app",
   email: "crossanimations1@gmail.com",
+  bookingUrl: "https://cal.com/0xcrosss/motiondesign",
   availability:
-    "Available to take freelance projects, full-time roles and other opportunities relating to motion design.",
+    "Available to take on freelance projects, full-time roles, collaborations and retainers in motion design.",
   // The rotating availability line: the label stays still, the phrases cycle.
   availabilityLabel: "Available to take on",
-  opportunities: ["Freelance projects", "Full-time roles", "Collaborations", "Other opportunities"],
+  opportunities: ["Freelance projects", "Full-time roles", "Collaborations", "Retainer"],
 
-  // Pre-filled email used by every "Start a project" button.
+  // Pre-filled email used by the email link in Contact (and as the form's fallback).
   enquiry: {
     subject: "Motion design project",
     body: "Hi Cross, I want to work with you on a motion design project. How do we kick off?",
@@ -37,7 +38,27 @@ export const site = {
     { label: "LinkedIn", href: "https://www.linkedin.com/in/0xcrosss" },
     { label: "X", href: "https://x.com/0xCrosss" },
     { label: "Instagram", href: "https://www.instagram.com/0xcrosss/" },
+    { label: "Behance", href: "https://www.behance.net/0xcrosss" },
+    { label: "Telegram", href: "https://t.me/savvycross" },
   ] as SocialLink[],
+
+  // Options for the "Start a project" form. Edit freely.
+  form: {
+    projectTypes: [
+      "Product / UI motion",
+      "Explainer video",
+      "Product launch video",
+      "Feature / release video",
+      "Brand animation",
+      "2D motion design",
+      "3D motion design",
+      "Social / short-form",
+      "Retainer",
+      "Something else",
+    ],
+    budgets: ["Under $1k", "$1k – $3k", "$3k – $5k", "$5k – $10k", "$10k+", "Not sure yet"],
+    timelines: ["As soon as possible", "2 – 4 weeks", "1 – 2 months", "2+ months", "Flexible"],
+  },
 
   portrait: {
     src: portrait,
