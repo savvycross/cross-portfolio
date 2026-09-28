@@ -2,14 +2,13 @@
 
 import { useState, type FormEvent, type ReactNode } from "react";
 import { site } from "@/data/site";
-import { mailtoHref, watchForMailFallback } from "./Enquiry";
 import { ArrowIcon } from "./icons";
 
-// With a Web3Forms access key the form delivers straight to Cross's inbox.
-// Without one, it opens the visitor's email app with everything filled in.
+// Briefs are delivered straight to Cross's inbox via Web3Forms — the visitor
+// never leaves the page.
 const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || site.form.web3formsKey;
 
-type Status = "idle" | "sending" | "sent" | "mailto" | "error";
+type Status = "idle" | "sending" | "sent" | "error";
 
 const field =
   "w-full border border-line bg-ink px-5 py-3.5 text-[15px] text-bone placeholder:text-mute/80 transition-colors hover:border-bone/25 focus:border-volt focus:outline-none";
@@ -58,57 +57,43 @@ export function ProjectForm() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
-    const subject = `${site.enquiry.subject}${data.type ? ` — ${data.type}` : ""} (${data.name})`;
-    const body = [
-      "Hi Cross,",
-      "",
-      data.details,
-      "",
-      `Project type: ${data.type || "—"}`,
-      `Budget range: ${data.budget || "—"}`,
-      `Timeline: ${data.timeline || "—"}`,
-      "",
-      `${data.name}`,
-      `${data.email}`,
-    ].join("\n");
-
-    if (WEB3FORMS_KEY) {
-      setStatus("sending");
-      try {
-        const res = await fetch("https://api.web3forms.com/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify({
-            access_key: WEB3FORMS_KEY,
-            subject,
-            from_name: data.name,
-            email: data.email,
-            replyto: data.email,
-            project_type: data.type,
-            budget: data.budget,
-            timeline: data.timeline,
-            message: data.details,
-          }),
-        });
-        const json = await res.json();
-        if (!json.success) throw new Error(json.message);
-        setStatus("sent");
-        form.reset();
-      } catch {
-        setStatus("error");
-        // Offer Gmail / copy so the brief isn't lost.
-        window.dispatchEvent(new CustomEvent("enquiry:fallback", { detail: { subject, body } }));
-      }
-      return;
+    setStatus("sending");
+    try {
+      if (!WEB3FORMS_KEY) throw new Error("Missing form key");
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: `${site.enquiry.subject}${data.type ? ` — ${data.type}` : ""} (${data.name})`,
+          from_name: data.name,
+          email: data.email,
+          replyto: data.email,
+          "Project type": data.type || "—",
+          "Budget range": data.budget || "—",
+          Timeline: data.timeline || "—",
+          message: data.details,
+        }),
+      });
+      const json = await res.json();
+      if (!json.success) throw new Error(json.message);
+      form.reset();
+      setStatus("sent");
+    } catch {
+      setStatus("error");
     }
-
-    window.location.href = mailtoHref({ subject, body });
-    watchForMailFallback({ subject, body });
-    setStatus("mailto");
   }
 
+  const sent = status === "sent";
+
   return (
-    <form onSubmit={onSubmit} className="grid gap-6 sm:grid-cols-2 sm:gap-x-5">
+    <div className="grid [&>*]:[grid-area:1/1]">
+    <form
+      onSubmit={onSubmit}
+      aria-hidden={sent}
+      inert={sent}
+      className={`grid gap-6 transition-[opacity,filter] duration-500 sm:grid-cols-2 sm:gap-x-5 ${sent ? "pointer-events-none opacity-0 blur-sm" : ""}`}
+    >
       <Field label="Name" htmlFor="f-name">
         <input id="f-name" name="name" required autoComplete="name" placeholder="Your name" className={`${field} rounded-full`} />
       </Field>
@@ -149,6 +134,9 @@ export function ProjectForm() {
           disabled={status === "sending"}
           className="group flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-volt px-6 py-4 text-[15px] font-medium text-on-volt transition-[filter,transform] hover:brightness-110 active:scale-[0.99] disabled:cursor-wait disabled:opacity-70"
         >
+          {status === "sending" && (
+            <span className="size-4 animate-spin rounded-full border-2 border-on-volt/30 border-t-on-volt" aria-hidden="true" />
+          )}
           {status === "sending" ? "Sending…" : "Send message"}
           <ArrowIcon className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
         </button>
@@ -163,20 +151,41 @@ export function ProjectForm() {
             Book a call
           </a>
         </p>
-        <p aria-live="polite" className="mt-3 min-h-5 text-center text-sm text-mute">
-          {status === "sent" && "Thanks — your message is on its way. I’ll get back to you soon."}
-          {status === "mailto" && "Your email app should open with everything filled in — just hit send."}
-          {status === "error" && (
-            <>
-              Something went wrong. Please email{" "}
-              <a href={`mailto:${site.email}`} className="text-bone underline underline-offset-4">
-                {site.email}
-              </a>
-              .
-            </>
-          )}
+        <p aria-live="polite" className="mt-3 min-h-5 text-center text-sm text-red-400">
+          {status === "error" && "Your message couldn’t be sent. Please check your connection and try again."}
         </p>
       </div>
     </form>
+
+      {/* Success state replaces the form in place, keeping the card's size. */}
+      <div
+        role="status"
+        aria-live="polite"
+        className={`flex flex-col items-center justify-center px-4 text-center transition-[opacity,translate] duration-700 ease-[var(--ease-out)] ${
+          sent ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-4 opacity-0"
+        }`}
+      >
+        {sent && (
+          <>
+            <span className="success-check grid size-16 place-items-center rounded-full bg-volt text-on-volt">
+              <svg viewBox="0 0 24 24" className="size-7" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+                <path d="M5 12.5l4.5 4.5L19 7.5" strokeLinecap="round" strokeLinejoin="round" pathLength={1} />
+              </svg>
+            </span>
+            <h3 className="font-display mt-7 text-[clamp(1.5rem,2.4vw,2rem)] text-bone">Message sent</h3>
+            <p className="mt-3 max-w-sm leading-relaxed text-mute">
+              Thanks for reaching out. I&rsquo;ll get back to you shortly to talk through your project.
+            </p>
+            <button
+              type="button"
+              onClick={() => setStatus("idle")}
+              className="mt-8 cursor-pointer text-sm text-mute underline decoration-line underline-offset-4 transition-colors hover:text-bone"
+            >
+              Send another message
+            </button>
+          </>
+        )}
+      </div>
+    </div>
   );
 }

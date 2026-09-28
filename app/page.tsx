@@ -276,15 +276,17 @@ export default async function Home() {
             </Reveal>
           </div>
 
-          {/* Right: project brief form, with the robot perched on top */}
-          <Reveal variant="section" delay={150} className="relative lg:mt-14">
-            <div className="absolute -top-[76px] right-6 z-10 w-20 sm:-top-[92px] sm:right-10 sm:w-24">
+          {/* Right: project brief form, with the robot hovering above it */}
+          <div className="flex min-w-0 flex-col">
+            <Reveal variant="section" delay={300} className="mr-6 w-24 self-end sm:mr-10 sm:w-28">
               <Robot greeting="Let’s build something" />
-            </div>
-            <div id="start" className="relative scroll-mt-32 rounded-3xl border border-line bg-surface/60 p-6 sm:p-10">
-              <ProjectForm />
-            </div>
-          </Reveal>
+            </Reveal>
+            <Reveal variant="section" delay={150} className="mt-8">
+              <div id="start" className="scroll-mt-32 rounded-3xl border border-line bg-surface/60 p-6 sm:p-10">
+                <ProjectForm />
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
     </>

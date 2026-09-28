@@ -7,7 +7,6 @@ import { BackToTop } from "@/components/BackToTop";
 import { themeScript, loaderScript } from "@/lib/head-scripts";
 import { Loader } from "@/components/Loader";
 import { CursorLabel } from "@/components/CursorLabel";
-import { EnquiryFallback } from "@/components/Enquiry";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -56,7 +55,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <BackToTop />
-        <EnquiryFallback />
         <CursorLabel />
       </body>
     </html>
