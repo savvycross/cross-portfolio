@@ -8,7 +8,7 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal } from "@/components/Reveal";
 import { ArrowIcon } from "@/components/icons";
-import { site } from "@/data/site";
+import { enquiryHref, site } from "@/data/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -51,7 +51,7 @@ function Media({ item, title }: { item: MediaItem; title: string }) {
 
 function MediaSection({ label, items, title }: { label: string; items: MediaItem[]; title: string }) {
   return (
-    <section className="container-x pt-24 sm:pt-32" aria-label={label}>
+    <section className="container-x pt-28 sm:pt-40" aria-label={label}>
       <Reveal>
         <h2 className="font-mono text-xs uppercase tracking-[0.2em] text-gold">{label}</h2>
       </Reveal>
@@ -88,7 +88,7 @@ export default async function ProjectPage({ params }: Params) {
 
   return (
     <article>
-      <header className="container-x pt-36 sm:pt-44">
+      <header className="container-x pt-16 sm:pt-24">
         <div className="intro">
           <Link href="/#work" className="inline-flex items-center gap-2 text-sm text-mute transition-colors hover:text-bone">
             <span aria-hidden="true">←</span> All work
@@ -97,18 +97,18 @@ export default async function ProjectPage({ params }: Params) {
             {project.categories.join(" · ")}
             {project.concept && <span className="ml-3 text-gold">Concept</span>}
           </p>
-          <h1 className="font-display mt-5 text-[clamp(3rem,10vw,9rem)]">{project.title}</h1>
+          <h1 className="font-display mt-6 text-[clamp(2.5rem,6vw,5.5rem)]">{project.title}</h1>
         </div>
       </header>
 
-      <section className="container-x mt-12 sm:mt-16" aria-label="Project video">
+      <section className="container-x mt-14 sm:mt-20" aria-label="Project video">
         {nda ? (
           <div className="grid aspect-video place-items-center rounded-[var(--radius)] border border-line bg-surface p-8 text-center">
             <div>
               <p className="font-mono text-xs uppercase tracking-[0.2em] text-gold">Under NDA</p>
               <p className="mt-3 text-mute">
                 This work isn&rsquo;t public yet.{" "}
-                <a href={`mailto:${site.email}`} className="text-bone underline underline-offset-4">
+                <a href={enquiryHref} className="text-bone underline underline-offset-4">
                   Ask to see it
                 </a>
                 .
@@ -127,8 +127,8 @@ export default async function ProjectPage({ params }: Params) {
         )}
       </section>
 
-      <section className="container-x pt-20 sm:pt-28" aria-label="Overview">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.4fr] lg:gap-16">
+      <section className="container-x pt-24 sm:pt-36" aria-label="Overview">
+        <div className="grid gap-14 lg:grid-cols-[1fr_1.6fr] lg:gap-24">
           <Reveal as="dl" className="grid grid-cols-2 gap-x-6 gap-y-8 self-start lg:grid-cols-1">
             {facts.map((f) => (
               <div key={f.label}>
@@ -139,13 +139,13 @@ export default async function ProjectPage({ params }: Params) {
           </Reveal>
           <div>
             <Reveal>
-              <p className="font-display text-[clamp(1.75rem,3.4vw,3rem)] !leading-[1.1]">{project.summary}</p>
+              <p className="font-display max-w-[28ch] text-[clamp(1.5rem,2.6vw,2.375rem)] !leading-[1.15]">{project.summary}</p>
             </Reveal>
             {project.highlights && project.highlights.length > 0 && (
               <Reveal as="ul" className="mt-12 border-t border-line">
-                {project.highlights.map((h, i) => (
-                  <li key={h} className="flex items-baseline gap-5 border-b border-line py-4 text-lg text-bone">
-                    <span className="font-mono text-xs text-mute">{String(i + 1).padStart(2, "0")}</span>
+                {project.highlights.map((h) => (
+                  <li key={h} className="flex items-center gap-4 border-b border-line py-5 text-lg text-bone">
+                    <span className="size-1.5 shrink-0 rounded-full bg-volt" aria-hidden="true" />
                     {h}
                   </li>
                 ))}
@@ -162,16 +162,16 @@ export default async function ProjectPage({ params }: Params) {
         <MediaSection label="Frames" items={project.gallery} title={project.title} />
       )}
 
-      <section className="container-x py-32 sm:py-44" aria-labelledby="related-title">
-        <Reveal className="mb-12 flex items-end justify-between gap-6">
-          <h2 id="related-title" className="font-display text-[clamp(2rem,4.2vw,3.75rem)]">
+      <section className="container-x py-32 sm:py-48" aria-labelledby="related-title">
+        <Reveal className="mb-16 flex items-end justify-between gap-6">
+          <h2 id="related-title" className="font-display text-[clamp(1.75rem,3.2vw,3rem)]">
             More work
           </h2>
           <Link href="/#work" className="flex items-center gap-2 text-sm text-mute transition-colors hover:text-bone">
             All projects <ArrowIcon />
           </Link>
         </Reveal>
-        <div className="grid gap-x-8 gap-y-16 md:grid-cols-2 lg:gap-x-10">
+        <div className="grid gap-x-10 gap-y-20 md:grid-cols-2 lg:gap-x-16">
           {related.map((p, i) => (
             <Reveal key={p.slug} delay={i * 90}>
               <ProjectCard

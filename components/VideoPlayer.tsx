@@ -40,12 +40,12 @@ export function VideoPlayer({ url, title, poster, aspect = 16 / 9, duration, pri
           aria-label={`Play ${title}`}
         >
           <Poster src={poster} alt="" label={title} priority={priority} />
-          <span className="absolute inset-0 bg-ink/20 transition-colors duration-500 group-hover:bg-ink/35" />
-          <span className="absolute bottom-5 left-5 flex items-center gap-3 rounded-full border border-bone/20 bg-ink/60 py-2 pl-2 pr-4 text-sm text-bone backdrop-blur-md transition-transform duration-500 group-hover:scale-[1.03] sm:bottom-7 sm:left-7">
-            <span className="grid size-8 place-items-center rounded-full bg-volt text-ink">
+          <span className="absolute inset-0 bg-black/10 transition-colors duration-500 group-hover:bg-black/25" />
+          <span className="absolute bottom-5 left-5 flex items-center gap-3 rounded-full border border-white/20 bg-black/55 py-2 pl-2 pr-4 text-sm text-white backdrop-blur-md transition-transform duration-500 group-hover:scale-[1.03] sm:bottom-7 sm:left-7">
+            <span className="grid size-8 place-items-center rounded-full bg-volt text-on-volt">
               <PlayIcon />
             </span>
-            Play {duration ? <span className="font-mono text-xs text-bone/60">{duration}</span> : null}
+            Play {duration ? <span className="font-mono text-xs text-white/70">{duration}</span> : null}
           </span>
         </button>
       )}
