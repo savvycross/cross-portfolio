@@ -13,8 +13,14 @@ export const site = {
   // Live address. Set NEXT_PUBLIC_SITE_URL when you move to your own domain.
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://cross-portfolio-gamma.vercel.app",
   email: "crossanimations1@gmail.com",
-  location: "Nigeria",
-  availability: "Available for freelance projects and remote opportunities.",
+  availability:
+    "Available to take freelance projects, full-time roles and other opportunities relating to motion design.",
+
+  // Pre-filled email used by every "Start a project" button.
+  enquiry: {
+    subject: "Motion design project",
+    body: "Hi Cross, I want to work with you on a motion design project. How do we kick off?",
+  },
 
   // Vimeo links. Set openingAnimation to a Vimeo URL to loop it in the hero;
   // when it's null the hero loops the showreel instead.
@@ -25,11 +31,9 @@ export const site = {
 
   // Only add platforms with real URLs. Empty list = the socials row is hidden.
   socials: [
-    // { label: "X", href: "https://x.com/..." },
-    // { label: "LinkedIn", href: "https://linkedin.com/in/..." },
-    // { label: "Instagram", href: "https://instagram.com/..." },
-    // { label: "Behance", href: "https://behance.net/..." },
-    // { label: "Vimeo", href: "https://vimeo.com/..." },
+    { label: "LinkedIn", href: "https://www.linkedin.com/in/0xcrosss" },
+    { label: "X", href: "https://x.com/0xCrosss" },
+    { label: "Instagram", href: "https://www.instagram.com/0xcrosss/" },
   ] as SocialLink[],
 
   portrait: {
@@ -71,3 +75,6 @@ export const site = {
     workflow: ["AEUX", "Overlord", "AI-assisted tools"],
   },
 };
+
+/** mailto: link with the enquiry subject and message already filled in. */
+export const enquiryHref = `mailto:${site.email}?subject=${encodeURIComponent(site.enquiry.subject)}&body=${encodeURIComponent(site.enquiry.body)}`;

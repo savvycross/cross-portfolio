@@ -65,18 +65,18 @@ export function HeroReel({ loopUrl, reelUrl, poster, aspect, duration }: Props) 
         <>
           <Poster src={poster} alt="Still from the Cross Makele showreel" label="Showreel" priority />
           <VimeoLoop url={loopUrl} active={inView && !reduced} title="Showreel preview" />
-          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-ink/70 to-transparent p-4 pt-16 sm:p-7">
+          <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 bg-gradient-to-t from-black/60 to-transparent p-4 pt-16 sm:p-7">
             <button
               type="button"
               onClick={() => setFull(true)}
-              className="group flex cursor-pointer items-center gap-3 rounded-full border border-bone/20 bg-ink/60 py-2 pl-2 pr-5 text-sm text-bone backdrop-blur-md transition-colors hover:border-volt/60"
+              className="group flex cursor-pointer items-center gap-3 rounded-full border border-white/20 bg-black/55 py-2 pl-2 pr-5 text-sm text-white backdrop-blur-md transition-colors hover:border-white/50"
             >
-              <span className="grid size-9 place-items-center rounded-full bg-volt text-ink transition-transform duration-500 group-hover:scale-110">
+              <span className="grid size-9 place-items-center rounded-full bg-volt text-on-volt transition-transform duration-500 group-hover:scale-110">
                 <PlayIcon />
               </span>
               Play reel with sound
             </button>
-            <span className="hidden font-mono text-xs uppercase tracking-[0.2em] text-bone/60 sm:block">
+            <span className="hidden font-mono text-xs uppercase tracking-[0.2em] text-white/70 sm:block">
               Showreel{duration ? ` — ${duration}` : ""}
             </span>
           </div>

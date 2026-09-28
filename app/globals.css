@@ -1,62 +1,93 @@
 @import "tailwindcss";
 
-@theme {
-  --color-ink: #0a0a09;
-  --color-surface: #131312;
-  --color-line: #262624;
-  --color-bone: #f2f0ea;
-  --color-mute: #8d8b84;
-  --color-volt: #3cf08a;
-  --color-gold: #c9a96a;
+/* Colour tokens point at CSS variables so the whole site can switch theme. */
+@theme inline {
+  --color-ink: var(--ink); /* page background */
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-bone: var(--bone); /* main text */
+  --color-mute: var(--mute);
+  --color-volt: var(--volt);
+  --color-gold: var(--gold);
+  --color-on-volt: #0a0a09; /* text sitting on a green fill, both themes */
 
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-:root {
-  --max: 1440px;
-  --gutter: clamp(1rem, 4vw, 3.5rem);
-  --radius: 14px;
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+:root,
+:root[data-theme="dark"] {
+  --ink: #0a0a09;
+  --surface: #131312;
+  --line: #262624;
+  --bone: #f2f0ea;
+  --mute: #8d8b84;
+  --volt: #3cf08a;
+  --gold: #c9a96a;
   color-scheme: dark;
 }
 
+:root[data-theme="light"] {
+  --ink: #f7f6f2;
+  --surface: #ebe9e3;
+  --line: #dcd9d1;
+  --bone: #111110;
+  --mute: #66645e;
+  --volt: #0f9d4a;
+  --gold: #8f6f2e;
+  color-scheme: light;
+}
+
+:root {
+  --max: 1320px;
+  --gutter: clamp(1.25rem, 6vw, 6rem);
+  --header: 4.5rem;
+  --radius: 14px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 html {
-  background: var(--color-ink);
-  color: var(--color-bone);
+  background: var(--ink);
+  color: var(--bone);
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
-  scroll-padding-top: 6rem;
+  scroll-padding-top: calc(var(--header) + 2rem);
 }
 
 body {
-  background: var(--color-ink);
+  background: var(--ink);
   font-family: var(--font-sans);
   text-rendering: optimizeLegibility;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 ::selection {
-  background: var(--color-volt);
-  color: var(--color-ink);
+  background: var(--volt);
+  color: #0a0a09;
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-volt);
+  outline: 2px solid var(--volt);
   outline-offset: 3px;
 }
 
 .font-display {
   font-weight: 500;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
 }
 
 .container-x {
   width: 100%;
-  max-width: var(--max);
+  max-width: calc(var(--max) + var(--gutter) * 2);
   margin-inline: auto;
   padding-inline: var(--gutter);
+}
+
+/* Vertical rhythm between homepage sections. */
+.section {
+  padding-top: clamp(7rem, 16vw, 14rem);
 }
 
 /* Scroll reveals — only hide when JS is running and motion is allowed. */
@@ -108,7 +139,7 @@ body {
   transition: color 0.4s var(--ease);
 }
 .service-row:hover .service-items {
-  color: var(--color-bone);
+  color: var(--bone);
 }
 
 @media (prefers-reduced-motion: reduce) {

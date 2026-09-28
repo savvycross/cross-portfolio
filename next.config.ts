@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   ...(pages ? { output: "export", basePath, trailingSlash: true } : {}),
   images: {
     unoptimized: pages,
+    qualities: [75, 95],
     remotePatterns: [{ protocol: "https", hostname: "i.vimeocdn.com" }],
   },
 };

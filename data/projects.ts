@@ -45,6 +45,20 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    slug: "sendana",
+    title: "Sendana",
+    client: "Sendana",
+    categories: ["Fintech", "Product Motion"],
+    year: 2026,
+    role: "Motion Designer",
+    tools: ["After Effects", "Figma", "Illustrator"],
+    summary:
+      "Product-focused motion work for Sendana, a financial platform built for freelancers, remote workers and content creators.",
+    highlights: ["Product explainer", "Direct-To-Bank feature video", "UI / product animation"],
+    video: "https://vimeo.com/1230687021",
+    visibility: "public",
+  },
+  {
     slug: "sp3nd",
     title: "SP3ND",
     client: "SP3ND",
@@ -63,20 +77,6 @@ export const projects: Project[] = [
       "Bitget Wallet integration",
     ],
     video: "https://vimeo.com/1230727075",
-    visibility: "public",
-  },
-  {
-    slug: "sendana",
-    title: "Sendana",
-    client: "Sendana",
-    categories: ["Fintech", "Product Motion"],
-    year: 2026,
-    role: "Motion Designer",
-    tools: ["After Effects", "Figma", "Illustrator"],
-    summary:
-      "Product-focused motion work for Sendana, a financial platform built for freelancers, remote workers and content creators.",
-    highlights: ["Product explainer", "Direct-To-Bank feature video", "UI / product animation"],
-    video: "https://vimeo.com/1230687021",
     visibility: "public",
   },
   {
