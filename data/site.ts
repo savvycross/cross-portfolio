@@ -44,6 +44,10 @@ export const site = {
 
   // Options for the "Start a project" form. Edit freely.
   form: {
+    // Web3Forms access key: form messages are delivered straight to the inbox
+    // it was created for. Public by design (it only allows sending to that inbox).
+    // NEXT_PUBLIC_WEB3FORMS_KEY overrides it; set to null to fall back to opening the email app.
+    web3formsKey: "1c08b3e8-cf6c-4001-a2ce-d0c1047b2e74" as string | null,
     projectTypes: [
       "Product / UI motion",
       "Explainer video",

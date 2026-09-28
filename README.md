@@ -47,12 +47,10 @@ Leave any optional field out and its section doesn't render.
 
 ### Contact form
 
-The "Start a project" form (Contact section) opens the visitor's email app with their brief written out.
-To have it deliver straight to your inbox instead:
-
-1. Get a free access key at web3forms.com (enter `crossanimations1@gmail.com`).
-2. In Vercel → Project → Settings → Environment Variables, add `NEXT_PUBLIC_WEB3FORMS_KEY` = your key.
-3. Redeploy.
+The "Start a project" form delivers straight to `crossanimations1@gmail.com` via Web3Forms
+(key in `data/site.ts` → `form.web3formsKey`; `NEXT_PUBLIC_WEB3FORMS_KEY` overrides it).
+Replies go to the visitor's address. If delivery ever fails, the visitor is offered Gmail or copy.
+Set the key to `null` to switch the form to opening the visitor's email app instead.
 
 Form options (project types, budgets, timelines) live in `data/site.ts` → `form`.
 
