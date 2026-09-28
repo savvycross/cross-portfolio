@@ -15,6 +15,9 @@ export const site = {
   email: "crossanimations1@gmail.com",
   availability:
     "Available to take freelance projects, full-time roles and other opportunities relating to motion design.",
+  // The rotating availability line: the label stays still, the phrases cycle.
+  availabilityLabel: "Available to take on",
+  opportunities: ["Freelance projects", "Full-time roles", "Collaborations", "Other opportunities"],
 
   // Pre-filled email used by every "Start a project" button.
   enquiry: {

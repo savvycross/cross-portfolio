@@ -3,13 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { enquiryHref, site } from "@/data/site";
+import { site } from "@/data/site";
+import { EnquiryLink } from "./Enquiry";
 import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
+  { href: "/#about", label: "About" },
   { href: "/#work", label: "Work" },
   { href: "/#services", label: "Services" },
-  { href: "/#about", label: "About" },
   { href: "/#contact", label: "Contact" },
 ];
 
@@ -49,12 +50,9 @@ export function Nav() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <a
-            href={enquiryHref}
-            className="hidden rounded-full bg-bone px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-volt hover:text-on-volt md:block"
-          >
+          <EnquiryLink className="hidden rounded-full bg-bone px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-volt hover:text-on-volt md:block">
             Start a project
-          </a>
+          </EnquiryLink>
           <button
             type="button"
             className="relative grid size-10 cursor-pointer place-items-center rounded-full border border-line md:hidden"
@@ -87,12 +85,9 @@ export function Nav() {
           ))}
         </ul>
         <div className="space-y-5">
-          <a
-            href={enquiryHref}
-            className="block w-full rounded-full bg-bone px-6 py-4 text-center text-sm font-medium text-ink"
-          >
+          <EnquiryLink className="block w-full rounded-full bg-bone px-6 py-4 text-center text-sm font-medium text-ink">
             Start a project
-          </a>
+          </EnquiryLink>
           <ul className="flex flex-wrap gap-5 text-sm text-mute">
             {site.socials.map((s) => (
               <li key={s.href}>
