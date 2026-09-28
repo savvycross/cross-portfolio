@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
-import { EnquiryLink } from "./Enquiry";
 import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
@@ -50,9 +49,12 @@ export function Nav() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <EnquiryLink className="hidden rounded-full bg-bone px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-volt hover:text-on-volt md:block">
+          <Link
+            href="/#start"
+            className="hidden rounded-full bg-bone px-5 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-volt hover:text-on-volt md:block"
+          >
             Start a project
-          </EnquiryLink>
+          </Link>
           <button
             type="button"
             className="relative grid size-10 cursor-pointer place-items-center rounded-full border border-line md:hidden"
@@ -85,9 +87,13 @@ export function Nav() {
           ))}
         </ul>
         <div className="space-y-5">
-          <EnquiryLink className="block w-full rounded-full bg-bone px-6 py-4 text-center text-sm font-medium text-ink">
+          <Link
+            href="/#start"
+            onClick={() => setOpen(false)}
+            className="block w-full rounded-full bg-bone px-6 py-4 text-center text-sm font-medium text-ink"
+          >
             Start a project
-          </EnquiryLink>
+          </Link>
           <ul className="flex flex-wrap gap-5 text-sm text-mute">
             {site.socials.map((s) => (
               <li key={s.href}>

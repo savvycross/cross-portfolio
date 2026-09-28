@@ -5,31 +5,40 @@ import { enquiryHref, site } from "@/data/site";
 
 const FALLBACK_EVENT = "enquiry:fallback";
 
-const gmailHref = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(site.email)}&su=${encodeURIComponent(
-  site.enquiry.subject,
-)}&body=${encodeURIComponent(site.enquiry.body)}`;
+type Mail = { subject: string; body: string };
+
+function gmailHref({ subject, body }: Mail) {
+  return `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(site.email)}&su=${encodeURIComponent(
+    subject,
+  )}&body=${encodeURIComponent(body)}`;
+}
+
+export function mailtoHref({ subject, body }: Mail) {
+  return `mailto:${site.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
 /**
- * "Start a project" link: opens the visitor's email app with the message
- * already written. If nothing takes focus away from the page shortly after
- * (no email app configured), a small helper offers Gmail or copying the address.
+ * Call right after opening a mailto: link. If nothing takes focus away from the
+ * page shortly after (no email app configured), a helper offers Gmail or copying.
  */
+export function watchForMailFallback(mail: Mail = site.enquiry) {
+  let left = false;
+  const mark = () => (left = true);
+  window.addEventListener("blur", mark, { once: true });
+  document.addEventListener("visibilitychange", mark, { once: true });
+  window.addEventListener("pagehide", mark, { once: true });
+  setTimeout(() => {
+    window.removeEventListener("blur", mark);
+    document.removeEventListener("visibilitychange", mark);
+    window.removeEventListener("pagehide", mark);
+    if (!left && document.hasFocus()) window.dispatchEvent(new CustomEvent<Mail>(FALLBACK_EVENT, { detail: mail }));
+  }, 1500);
+}
+
+/** Plain email link with the enquiry pre-filled, plus the no-email-app fallback. */
 export function EnquiryLink({ className, children }: { className?: string; children: ReactNode }) {
-  function onClick() {
-    let left = false;
-    const mark = () => (left = true);
-    window.addEventListener("blur", mark, { once: true });
-    document.addEventListener("visibilitychange", mark, { once: true });
-    window.addEventListener("pagehide", mark, { once: true });
-    setTimeout(() => {
-      window.removeEventListener("blur", mark);
-      document.removeEventListener("visibilitychange", mark);
-      window.removeEventListener("pagehide", mark);
-      if (!left && document.hasFocus()) window.dispatchEvent(new Event(FALLBACK_EVENT));
-    }, 1500);
-  }
   return (
-    <a href={enquiryHref} onClick={onClick} className={className}>
+    <a href={enquiryHref} onClick={() => watchForMailFallback()} className={className}>
       {children}
     </a>
   );
@@ -37,13 +46,14 @@ export function EnquiryLink({ className, children }: { className?: string; child
 
 /** Mounted once in the layout; appears only when the email app didn't open. */
 export function EnquiryFallback() {
-  const [open, setOpen] = useState(false);
+  const [mail, setMail] = useState<Mail | null>(null);
   const [copied, setCopied] = useState(false);
+  const open = mail !== null;
 
   useEffect(() => {
-    const show = () => {
+    const show = (e: Event) => {
       setCopied(false);
-      setOpen(true);
+      setMail((e as CustomEvent<Mail>).detail ?? site.enquiry);
     };
     window.addEventListener(FALLBACK_EVENT, show);
     return () => window.removeEventListener(FALLBACK_EVENT, show);
@@ -51,8 +61,8 @@ export function EnquiryFallback() {
 
   useEffect(() => {
     if (!open) return;
-    const t = setTimeout(() => setOpen(false), 12000);
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const t = setTimeout(() => setMail(null), 15000);
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMail(null);
     window.addEventListener("keydown", onKey);
     return () => {
       clearTimeout(t);
@@ -61,8 +71,9 @@ export function EnquiryFallback() {
   }, [open]);
 
   async function copy() {
+    if (!mail) return;
     try {
-      await navigator.clipboard.writeText(`${site.email}\n\n${site.enquiry.body}`);
+      await navigator.clipboard.writeText(`To: ${site.email}\nSubject: ${mail.subject}\n\n${mail.body}`);
       setCopied(true);
     } catch {}
   }
@@ -79,11 +90,11 @@ export function EnquiryFallback() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-sm font-medium text-bone">No email app opened?</p>
-          <p className="mt-1 text-sm leading-relaxed text-mute">Send it from Gmail, or copy the address and message.</p>
+          <p className="mt-1 text-sm leading-relaxed text-mute">Send it from Gmail, or copy the message and email it yourself.</p>
         </div>
         <button
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={() => setMail(null)}
           aria-label="Close"
           className="-mr-1 -mt-1 grid size-8 shrink-0 cursor-pointer place-items-center rounded-full text-mute hover:text-bone"
         >
@@ -92,10 +103,10 @@ export function EnquiryFallback() {
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
         <a
-          href={gmailHref}
+          href={gmailHref(mail ?? site.enquiry)}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={() => setOpen(false)}
+          onClick={() => setMail(null)}
           className="rounded-full bg-bone px-4 py-2.5 text-sm font-medium text-ink transition-colors hover:bg-volt hover:text-on-volt"
         >
           Open in Gmail
@@ -105,7 +116,7 @@ export function EnquiryFallback() {
           onClick={copy}
           className="cursor-pointer rounded-full border border-line px-4 py-2.5 text-sm text-bone transition-colors hover:border-bone/40"
         >
-          {copied ? "Copied" : "Copy email & message"}
+          {copied ? "Copied" : "Copy message"}
         </button>
       </div>
     </div>

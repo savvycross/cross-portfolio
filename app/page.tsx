@@ -6,7 +6,8 @@ import { formatDuration, getVimeoMeta } from "@/lib/vimeo";
 import { HeroReel } from "@/components/HeroReel";
 import { ProjectCard } from "@/components/ProjectCard";
 import { Reveal, SplitWords } from "@/components/Reveal";
-import { CopyEmail } from "@/components/CopyEmail";
+import { ProjectForm } from "@/components/ProjectForm";
+import { ArrowIcon } from "@/components/icons";
 import { EnquiryLink } from "@/components/Enquiry";
 import { AvailabilityTicker } from "@/components/AvailabilityTicker";
 import { Robot } from "@/components/Robot";
@@ -61,9 +62,12 @@ export default async function Home() {
               >
                 View work
               </Link>
-              <EnquiryLink className="rounded-full border border-line px-6 py-3 text-sm text-bone transition-colors hover:border-bone/40">
+              <Link
+                href="#start"
+                className="rounded-full border border-line px-6 py-3 text-sm text-bone transition-colors hover:border-bone/40"
+              >
                 Start a project
-              </EnquiryLink>
+              </Link>
             </div>
           </div>
         </div>
@@ -207,44 +211,81 @@ export default async function Home() {
 
       {/* Contact */}
       <section id="contact" className="container-x section pb-32 sm:pb-48" aria-labelledby="contact-title">
-        <div className="relative">
-          <Reveal variant="ui">
-            <SectionLabel>Contact</SectionLabel>
-          </Reveal>
-          <div className="mt-10 flex flex-col-reverse gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <Reveal as="h2" variant="words" id="contact-title" className="font-display max-w-[18ch] text-[clamp(2.25rem,5vw,4.75rem)]">
+        <div className="grid grid-cols-[minmax(0,1fr)] gap-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
+          {/* Left: pitch + direct links */}
+          <div className="min-w-0">
+            <Reveal variant="ui">
+              <SectionLabel>Contact</SectionLabel>
+            </Reveal>
+            <Reveal as="h2" variant="words" id="contact-title" className="font-display mt-8 max-w-[16ch] text-[clamp(2.25rem,4.2vw,4rem)]">
               <SplitWords segments={["Building something? Let’s explain it", { text: ".", className: "text-volt" }]} />
             </Reveal>
-            <Reveal variant="section" delay={200} className="w-24 self-end sm:w-32 lg:mr-8 lg:w-40">
-              <Robot greeting="Let’s build something" />
-            </Reveal>
-          </div>
-        </div>
-        <Reveal variant="section" className="mt-20 grid gap-12 border-t border-line pt-12 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div className="space-y-10">
-            <EnquiryLink className="inline-block break-all text-[clamp(1.25rem,2.6vw,2rem)] tracking-tight text-bone underline decoration-line decoration-1 underline-offset-[0.25em] transition-colors hover:text-volt hover:decoration-volt">
-              {site.email}
-            </EnquiryLink>
-            <AvailabilityTicker label={site.availabilityLabel} items={site.opportunities} size="md" />
-          </div>
-          <div className="flex flex-wrap items-center gap-3">
-            <EnquiryLink className="rounded-full bg-bone px-5 py-3 text-sm font-medium text-ink transition-colors hover:bg-volt hover:text-on-volt">
-              Start a project
-            </EnquiryLink>
-            <CopyEmail email={site.email} />
-            {site.socials.map((s) => (
+
+            <Reveal variant="text" delay={150} className="mt-12">
+              <EnquiryLink className="group flex items-center gap-4 rounded-2xl border border-line bg-surface/60 p-5 transition-colors hover:border-bone/25">
+                <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-volt/10 text-volt">
+                  <svg viewBox="0 0 20 20" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                    <rect x="2.5" y="4.5" width="15" height="11" rx="2" />
+                    <path d="M3 5.5l7 5 7-5" strokeLinejoin="round" />
+                  </svg>
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-mono text-[11px] uppercase tracking-[0.2em] text-mute">Email</span>
+                  <span className="mt-1 block truncate text-[17px] font-medium text-bone">{site.email}</span>
+                </span>
+                <ArrowIcon className="size-4 shrink-0 text-mute transition-[color,translate] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-volt" />
+              </EnquiryLink>
               <a
-                key={s.href}
-                href={s.href}
+                href={site.bookingUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-line px-5 py-3 text-sm text-bone transition-colors hover:border-bone/40"
+                className="group mt-4 flex items-center gap-4 rounded-2xl border border-line bg-surface/60 p-5 transition-colors hover:border-bone/25"
               >
-                {s.label}
+                <span className="grid size-12 shrink-0 place-items-center rounded-xl bg-gold/10 text-gold">
+                  <svg viewBox="0 0 20 20" className="size-5" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                    <rect x="2.5" y="4" width="15" height="13" rx="2" />
+                    <path d="M2.5 8h15M6.5 2.5v3M13.5 2.5v3" strokeLinecap="round" />
+                  </svg>
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block font-mono text-[11px] uppercase tracking-[0.2em] text-mute">Book a call</span>
+                  <span className="mt-1 block truncate text-[17px] font-medium text-bone">Pick a time that works for you</span>
+                </span>
+                <ArrowIcon className="size-4 shrink-0 text-mute transition-[color,translate] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-volt" />
               </a>
-            ))}
+            </Reveal>
+
+            <ul className="mt-4 grid grid-cols-2 gap-3 sm:gap-4">
+              {site.socials.map((s, i) => (
+                <Reveal as="li" key={s.href} variant="ui" delay={200 + i * 60}>
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex items-center justify-between gap-3 rounded-2xl border border-line bg-surface/60 px-5 py-5 text-[15px] font-medium text-bone transition-colors hover:border-bone/25"
+                  >
+                    {s.label}
+                    <ArrowIcon className="size-4 text-mute transition-[color,translate] duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-volt" />
+                  </a>
+                </Reveal>
+              ))}
+            </ul>
+
+            <Reveal variant="section" delay={250} className="mt-14">
+              <AvailabilityTicker label={site.availabilityLabel} items={site.opportunities} size="md" />
+            </Reveal>
           </div>
-        </Reveal>
+
+          {/* Right: project brief form, with the robot perched on top */}
+          <Reveal variant="section" delay={150} className="relative lg:mt-14">
+            <div className="absolute -top-[76px] right-6 z-10 w-20 sm:-top-[92px] sm:right-10 sm:w-24">
+              <Robot greeting="Let’s build something" />
+            </div>
+            <div id="start" className="relative scroll-mt-32 rounded-3xl border border-line bg-surface/60 p-6 sm:p-10">
+              <ProjectForm />
+            </div>
+          </Reveal>
+        </div>
       </section>
     </>
   );
