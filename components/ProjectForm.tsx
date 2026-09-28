@@ -5,10 +5,9 @@ import { site } from "@/data/site";
 import { mailtoHref, watchForMailFallback } from "./Enquiry";
 import { ArrowIcon } from "./icons";
 
-// Optional: a free Web3Forms access key (web3forms.com) makes the form deliver
-// straight to Cross's inbox. Without it, the form opens the visitor's email app
-// with everything filled in.
-const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+// With a Web3Forms access key the form delivers straight to Cross's inbox.
+// Without one, it opens the visitor's email app with everything filled in.
+const WEB3FORMS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_KEY || site.form.web3formsKey;
 
 type Status = "idle" | "sending" | "sent" | "mailto" | "error";
 
@@ -97,6 +96,8 @@ export function ProjectForm() {
         form.reset();
       } catch {
         setStatus("error");
+        // Offer Gmail / copy so the brief isn't lost.
+        window.dispatchEvent(new CustomEvent("enquiry:fallback", { detail: { subject, body } }));
       }
       return;
     }
