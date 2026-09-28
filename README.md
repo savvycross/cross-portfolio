@@ -49,8 +49,8 @@ Leave any optional field out and its section doesn't render.
 
 The "Start a project" form delivers straight to `crossanimations1@gmail.com` via Web3Forms
 (key in `data/site.ts` → `form.web3formsKey`; `NEXT_PUBLIC_WEB3FORMS_KEY` overrides it).
-Replies go to the visitor's address. If delivery ever fails, the visitor is offered Gmail or copy.
-Set the key to `null` to switch the form to opening the visitor's email app instead.
+Replies go to the visitor's address. Everything happens on the page: the form turns into a
+"Message sent" confirmation on success, or shows a retry message if sending fails.
 
 Form options (project types, budgets, timelines) live in `data/site.ts` → `form`.
 
